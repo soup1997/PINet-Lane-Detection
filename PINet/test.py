@@ -9,20 +9,11 @@ import time
 from parameters import Parameters
 import util
 
-#import rospy
-#from geometry_msgs.msg import Twist
-
 p = Parameters()
 
-#twist = Twist()
 
 min_max_steering_angle = list(map(float, [-90, -20, 20, 90]))
 scaling_ratio = abs(min(min_max_steering_angle)) / max(min_max_steering_angle)
-
-#rospy.init_node('PINet')
-#rospy.loginfo('Steering Test based on PINet.')
-#pub = rospy.Publisher('cmd_vel', twist)
-#rate = rospy.Rate(20)
 
 steering_wheel_img = cv2.imread('test_video/steering_wheel.png')
 steering_wheel_img = cv2.resize(steering_wheel_img, (512, 256))
@@ -33,33 +24,12 @@ steering_wheel_img = cv2.resize(steering_wheel_img, (512, 256))
 ## Training
 ## 
 ###############################################################
-# cv2.namedWindow('image')
-
-# def mouse_callback(event, x, y, flags, param):
-# print("마우스 이벤트 발생, x:", x ," y:", y) # 이벤트 발생한 마우스 위치 출력
-
-
 def region_of_interest(img, vertices=[(20, 256), (180, 170), (512 - 180, 170), (512 - 20, 256)],
                        match_mask_color=(255, 255, 255)):
     img = deepcopy(img)
     mask = np.zeros_like(img)
     cv2.fillPoly(mask, np.array([vertices], dtype=np.int32), match_mask_color)
     return cv2.bitwise_and(img, mask)  # 관심영역을 제외한 모든 부분이 검은색
-
-
-# def ros_steering(steering_angle):
-#     global twist, pub, scaling_ratio, rate
-#
-#     twist.linear.x = 0  # 선속도 x
-#     twist.linear.y = 0  # 선속도 y
-#     twist.linear.z = 0  # 선속도 z
-#
-#     twist.angular.x = 0  # 각속도 x
-#     twist.angular.y = 0  # 각속도 y
-#     twist.angular.z = scaling_ratio * steering_angle
-#
-#     pub.publish('cmd_vel', twist)
-#     rate.sleep()
 
 def Testing():
     global steering_wheel_img, rate
