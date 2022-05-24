@@ -18,16 +18,12 @@ class MovAvgFilter:  # 이동 평균 필터
     n = 0
 
     def __init__(self, _n):
-        # 초기화로 n개의 값을 0으로 둡니다.
         for _ in range(_n):
             self.xBuf.put(0)
-        # 참조할 데이터의 갯수를 저장합니다.
         self.n = _n
 
     def movAvgFilter(self, x):
-        # 큐의 front 값은 x_(k-n) 에 해당합니다.
         front = self.xBuf.get()
-        # 이번 스텝에 입력 받은 값을 큐에 넣습니다.
         self.xBuf.put(x)
 
         avg = self.prevAvg + (x - front) / self.n
@@ -212,7 +208,7 @@ steering_memory = 0  # 이전 값을 저장하기 위한 변수
 avg_filter = MovAvgFilter(10)  # 실시간성이 우선 (n값을 낮게), 노이즈제거 우선(n값을 높게)
 
 
-def get_angle_on_lane(x, y):  # 2022/02/26 수정 및 작성완료
+def get_angle_on_lane(x, y): 
     global steering_memory
 
     if len(x) == 1 or len(y) == 1:  # 레인이 한개만 인식됬을때 조향각 추출
